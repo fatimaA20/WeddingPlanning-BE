@@ -6,10 +6,7 @@ const userSchema = mongoose.Schema({
     lastName: {type: String, required: true},
     emailAddress: {type: String, required: true},
     password: {type: String, required: true},
-    job : [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Job'
-    }]
+    user_role: {type:String , require:true , default:'user'}
 },{
     timestamps: true
 })

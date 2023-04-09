@@ -1,49 +1,88 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
+// Importing the 'express' module
+const express = require('express')
+// Importing the 'mongoose' module
+const mongoose = require('mongoose')
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+// const bcrypt = require('bcrypt');
 
-var app = express();
-const PORT = 3000
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+// Importing the 'express-session' module
+const session = require('express-session')
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// Importing the 'passport' module in the place where we config in
+const passport = require('./lib/passportConfig')
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
-});
+// Setting the port number for our server
+const PORT = 4000
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+// Initializing our application by creating an instance of the Express module
+const app = express()
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-});
+app.use(express.static(__dirname + '/public'));
+
+//initilize express layout
+const expressLayouts = require('express-ejs-layouts')
+
+// look into views folder with a file name called layout.ejs
+app.use(expressLayouts)
+
+// most important thing     
+require('dotenv').config();
+
+//import routes
+const indexRoute = require('./routes/index');
+const userRouter = require('./routes/users')
+const authRouter = require('./routes/auth')
+
+
+//uses the session library and sort our session
+app.use(session({
+     secret: 'supersecuresecret!',
+     saveUninitialized: true,
+     resave: false,
+     cookie: {maxAge: 604800}
+ }))
+ app.use(passport.initialize())
+ app.use(passport.session())
+
+ // adding this middleWare to take user info
+ app.use(function(req, res, next){
+    res.locals.currentUser = req.user;
+    next();
+ })
+
+
+//mount route
+app.use('/', indexRoute);
+app.use('/' , userRouter)
+app.use('/', authRouter)
+
 
 // Starting the server and listening for incoming requests on the specified ports
 app.listen(PORT, ()=>{
-  console.log(`WeddingPlanning is running on ${PORT}`)
+    console.log(`WeddingPlanning is running on ${PORT}`)
 })
 
-module.exports = app;
+//Ignore warnings
+mongoose.set('strictQuery', false)
+
+//set engine - look into the views folder to ejs files
+app.set('view engine' , 'ejs')
+
 
 //database connection
-const dbURI = process.env.DATABASE_URI 
+const dbURI = process.env.DATABASE_URI //we put this instead of putting the db because we want to ignore it so we take it from .env 
+// console.log(process.env.DATABASE_URI)
+
+mongoose.connect(dbURI , {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+
+})
+.then(() => {
+    console.log('MongoDB Connected');
+  })
+  .catch((error) => {
+    console.log(error);
+  });
+
