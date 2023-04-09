@@ -1,0 +1,15 @@
+<h1> DJ</h1>
+
+
+<div>
+    <% allDJs.forEach((DJ) => { %>
+        <div class="dj">
+          <img src="<%= Dj.image %>">
+          <h2>Name: <%= DJ.name %></h2>
+          <p>No Of Hours: <%= DJ.noOfHours %></p>
+          <p> Price: <%= DJ.price %></p>
+          <a href="/dj/edit?id=<%= DJ._id %>">Edit</a>
+          <a href="/dj/delete?id=<%= DJ._id %>">Delete</a>
+        </div>
+      <% }) %>
+</div>
