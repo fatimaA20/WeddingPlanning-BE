@@ -1,0 +1,23 @@
+<h1> Edit DJ</h1>
+
+
+
+<form method ="post" action="/DJ/update?_method=PUT">
+
+    <label>Name</label>
+    <input type="text" name="name" value = <%= DJ.name %> class="" >
+
+    <label>No Of Hours</label>
+    <input type="number" name="noOfHours" value = <%= DJ.noOfHours %> class="" >
+
+    <label>Price</label>
+    <input type="number" name="price" value = <%= DJ.price %> class="" >
+
+    <label>Image</label>
+    <input type="file" name="image"  value = <%= DJ.image %> class="" >
+
+
+    <input type="hidden" name="id" value="<%= DJ._id %>"  class="form-control">
+    <br>
+    <button type="submit" class="">Save</button>
+</form>

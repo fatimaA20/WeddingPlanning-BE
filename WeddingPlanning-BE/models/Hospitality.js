@@ -5,7 +5,7 @@ const hospitalitySchema = mongoose.Schema({
     type: { type: String, required: true },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    image: { type: Image, required: true },
+    image: { type: String},
 })
 
 const Hospitality = mongoose.model('Hospitality', hospitalitySchema)

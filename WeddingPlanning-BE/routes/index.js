@@ -5,7 +5,7 @@ const express = require('express');
 const router = express.Router();
 
 // Controller
-const indexCntrl = require('../Controllers/index');
+const indexCntrl = require('../controllers/index');
 
 // Routes
 router.get("/", indexCntrl.index_get);
