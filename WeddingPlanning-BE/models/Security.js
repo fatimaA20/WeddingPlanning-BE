@@ -5,7 +5,7 @@ const securitySchema = mongoose.Schema({
     description: { type: String, required: true },
     noOfSecurity: { type: Number },
     price: { type: Number, required: true },
-    image: { type: Image, required: true },
+    image: { type: String},
 })
 
 const Security = mongoose.model('Security', securitySchema)

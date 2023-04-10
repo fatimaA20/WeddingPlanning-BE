@@ -6,7 +6,7 @@ const buffetSchema = mongoose.Schema({
     description: { type: String, required: true },
     noOfGuests: { type: Number, required: true },
     price: { type: Number, required: true },
-    image: { type: Image, required: true },
+    image: { type: String},
 })
 
 const Buffet = mongoose.model('Buffet', buffetSchema)
