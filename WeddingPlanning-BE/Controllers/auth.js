@@ -21,7 +21,7 @@ exports.auth_signup_get = (req, res) => {
 // HTTP POST - Signup Route - To post the data
 exports.auth_signup_post = (req, res) => {
 
-  console.log('body' ,req.body)
+  console.log('body' , req.body)
   // console.log('header' ,req.header)
   let user = new User(req.body);
 
@@ -64,7 +64,7 @@ exports.auth_signin_post = async (req, res) => {
   try {
     // await mean wait for this line to done than complete
     let user = await User.findOne({ emailAddress });
-    console.log(user);
+    console.log('user'+user);
 
     if (!user) {
       // if this return done the whole next api will not completed 
@@ -73,7 +73,7 @@ exports.auth_signin_post = async (req, res) => {
 
     // Compare Password
     const isMatch = await bcrypt.compareSync(password, user.password);
-    console.log(password);
+    console.log('pass'+password);
     console.log(user.password);
 
     if (!isMatch) {
