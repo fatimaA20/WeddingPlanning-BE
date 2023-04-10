@@ -65,6 +65,8 @@ const authRoute = require('./routes/auth');
 const DJRoute =require('./routes/DJs')
 const imageRoute = require('./routes/image');
 const hallRoute = require('./routes/Halls');
+const BuffetRoute=require('./routes/Buffets')
+const HospitalityRoute = require('./routes/Hospitality')
 
 
 //mount route
@@ -72,7 +74,10 @@ app.use('/', indexRoute);
 app.use('/', authRoute);
 app.use('/',DJRoute);
 app.use('/', imageRoute);
-app.use('/',hallRoute)
+app.use('/',hallRoute);
+app.use('/',BuffetRoute )
+app.use('/',HospitalityRoute )
+
 
 
 // Node.js to look in a folder views for all the ejs files.
