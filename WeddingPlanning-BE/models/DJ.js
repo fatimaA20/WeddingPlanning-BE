@@ -4,7 +4,7 @@ const DJSchema = mongoose.Schema({
     name: { type: String, required: true },
     noOfHours: { type: Number },
     price: { type: Number },
-    image: { type: Image, required: true }
+    image: { type: String}
 })
 const DJ = mongoose.model('DJ', DJSchema)
 

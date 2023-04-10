@@ -49,10 +49,13 @@ app.use(session({
  //import routes
 const indexRoute = require('./routes/index');
 const authRoute = require('./routes/auth');
+const DJRoute =require('./routes/DJs')
 
 //mount route
 app.use('/', indexRoute);
 app.use('/', authRoute);
+app.use('/',DJRoute);
+
 
 // Node.js to look in a folder views for all the ejs files.
 app.set("view engine", "ejs");

@@ -5,7 +5,7 @@ const hallSchema = mongoose.Schema({
     size: { type: Number, required: true },
     availableDate: { type: Date, required: true },
     price: { type: Number, required: true },
-    image: { type: Image, required: true }
+    image: { type: String},
 })
 
 const Hall = mongoose.model('Hall', hallSchema)

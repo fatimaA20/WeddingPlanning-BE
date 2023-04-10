@@ -5,7 +5,7 @@ const bouquetSchema = mongoose.Schema({
     description: { type: String },
     price: { type: Number, required: true },
     color: { type: String, required: true },
-    image: { type: Image, required: true },
+    image: { type: String},
 })
 
 const Bouquet = mongoose.model('Bouquet', bouquetSchema)
