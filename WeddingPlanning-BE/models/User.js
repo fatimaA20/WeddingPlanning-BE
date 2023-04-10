@@ -1,23 +1,52 @@
-const mongoose = require('mongoose')
-const bcrypt = require('bcrypt')
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
+// User Schema
 const userSchema = mongoose.Schema({
-    firstName: {type: String, required: true},
-    lastName: {type: String, required: true},
-    emailAddress: {type: String, required: true},
-    password: {type: String, required: true},
-    user_role: {type:String , require:true , default:'user'}
-},{
+    firstName: {
+        type: String,
+        required: true,
+        minlength: [3, "First name must be more than 3 characters"],
+        maxlength: [99, "This is too much man..... Chill!!!"]
+    },
+    lastName: {
+        type: String,
+        required: true,
+        minlength: [3, "Last name must be more than 3 characters"],
+        maxlength: [99, "This is too much man..... Chill!!!"]
+    },
+    emailAddress: {
+        type: String,
+        required: true,
+        lowercase:true,
+        unique: true
+    },
+    password:{
+        type: String,
+        required: true,
+        minlength: [6, "khalaas... your password is too weak"]
+    },
+
+    userRole:{
+        type: String,
+        required: true,
+        default :'user'
+    }
+
+},
+{
     timestamps: true
 })
 
+// verifyPassword
 userSchema.methods.verifyPassword = function(password){
-    console.log('verifying' , password)
-    console.log(this.password)
-    // compares the password that we passed and the this.password is in userSchema that the user entered
-    return bcrypt.compareSync(password, this.password)
+    console.log(password);
+    console.log(this.password);
+    return bcrypt.compareSync(password, this.password);
 }
 
-const User = mongoose.model('User' , userSchema)
+// User Model
+const User = mongoose.model("User", userSchema);
 
-module.exports = User
+// Exports
+module.exports = User;

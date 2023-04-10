@@ -1,116 +1,119 @@
-//packages
-const User = require('../models/User')
-const bcrypt = require('bcrypt')
-const passport = require('../lib/passportConfig')
+// Require User Model
+const User = require("../models/User");
 
+// Require jsonwebtoken
+const jwt = require("jsonwebtoken");
 
-//signup - GET
+// Require bcrypt
+const bcrypt = require("bcrypt");
+const salt = 10;
+
+// Require Passport Configurations
+let passport = require("../helper/ppConfig");
+
+// API's for registration and Authentication
+
+// HTTP GET - Signup Route -To load the signup form
 exports.auth_signup_get = (req, res) => {
-    res.render('auth/signup')
-}
+  res.render("auth/signup");
+};
 
-
-//signup - POST
+// HTTP POST - Signup Route - To post the data
 exports.auth_signup_post = (req, res) => {
-    let user = new User(req.body)
-    console.log(user)
-    let hash = bcrypt.hashSync(req.body.password, 8)
-    user.password = hash
 
-    user.save()
-        .then(() => {
-            res.redirect('/auth/signin')
-        })
-        .catch((err) => {
-            console.log(err)
-            res.send('missing input or wrong! please try again!')
-        })
-}
+  console.log('body' ,req.body)
+  // console.log('header' ,req.header)
+  let user = new User(req.body);
 
+  let hash = bcrypt.hashSync(req.body.password, salt);
+  console.log(hash);
 
-//signin - GET
+  user.password = hash;
+
+  // Save user
+  user
+    .save()
+    .then(() => {
+      // res.redirect("/auth/signin");
+      // we add this line 
+      res.json({ message: "User Created Successfully" });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.send("Please try again later.");
+    });
+};
+
+// HTTP GET - Signin Route - To load the signin form
 exports.auth_signin_get = (req, res) => {
-    res.render('auth/signin')
-}
+  res.render("auth/signin");
+};
 
+// HTTP POST - Signin Route - To post the data
+// exports.auth_signin_post = passport.authenticate('local', {
+//     successRedirect: "/",
+//     failureRedirect: "/auth/signin",
+// });
 
-// authonticating for sigin -POST
-exports.auth_signin_post = passport.authenticate('local', {
-    successRedirect: '/', //this is like the home page
-    failureRedirect: '/auth/signin'
-})
+// JWT Authentication
+exports.auth_signin_post = async (req, res) => {
+  console.log("req :" , req.body)
+  let { emailAddress, password } = req.body;
+  console.log(emailAddress);
 
+  try {
+    // await mean wait for this line to done than complete
+    let user = await User.findOne({ emailAddress });
+    console.log(user);
 
-//log out
-exports.auth_logout_get = (req, res) => {
-    req.logout(function (err) {
-        if (err) {
-            return next(err)
-        }
-    })
-    res.redirect('/')
-}
-//HTTP EDIT User - GET
-exports.auth_update_get = (req, res) => {
-    console.log(req.user._id)
-    // console.log(req.body.id)
-    User.findByIdAndUpdate(req.user._id)
-
-        .then(users => {
-            res.render('auth/edit', { users })
-        })
-        .catch(err => {
-            console.log(err)
-        })
-
-}
-//HTTP edit user post
-exports.auth_update_post = (req, res) => {
-    console.log(req.body.id)
-    User.findByIdAndUpdate(req.body.id, req.body)
-        .then(() => {
-            res.redirect("/auth/profile")
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
-
-//HTTP edit pass - GET
-exports.auth_changePass_get = (req, res) => {
-    User.findByIdAndUpdate(req.user._id)
-
-        .then(users => {
-            res.render('auth/changePass', { users })
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
-let hashedPass
-//HTTP edit password - Post
-exports.auth_changePass_post = (req, res) => {
-    if (req.body.Password !== req.body.Password2) {
-        return res.send('wrong !')
+    if (!user) {
+      // if this return done the whole next api will not completed 
+      return res.json({ message: "User Not Found" });
     }
-    hashedPass = bcrypt.hashSync(req.body.Password, 8)
-    User.findByIdAndUpdate(req.body.id, { password: hashedPass })
 
-        .then(() => {
-            res.redirect('/auth/profile')
-        })
-        .catch(err => {
-            console.log(err)
-        })
-}
+    // Compare Password
+    const isMatch = await bcrypt.compareSync(password, user.password);
+    console.log(password);
+    console.log(user.password);
 
-exports.auth_profile_get = (req,res) => {
-     User.findById(req.user._id)
-     
-     .then(user => {
-        res.render('auth/profile', { user })
-    })
-    .catch(err => {
-        console.log(err)
-    })
-}
+    if (!isMatch) {
+      return res.json({ message: "Password doesnot matched" });
+    }
+
+    // Generate JWT
+    // jason - web-token
+
+    // store data info
+    const payload = {
+      user: {
+        id: user._id,
+        name: user.firstName
+      },
+    };
+
+    // jwt is a lib was imported befor
+    jwt.sign(
+      payload, //here is our data
+      process.env.SECRET,
+      { expiresIn: 36000000 },
+      (err, token) => {
+        if (err) throw err;
+        res.json({ token }).status(200);
+      }
+    );
+  } catch (error) {
+    console.log(error);
+    res.json({ message: "Your are not loggedIn !!!" }).status(400);
+  }
+};
+
+// HTTP GET - Logout Route - To logout the user
+exports.auth_logout_get = (req, res) => {
+  // Invalidate the session
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    res.redirect("/auth/signin");
+  });
+};

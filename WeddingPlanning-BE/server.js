@@ -3,14 +3,8 @@ const express = require('express')
 // Importing the 'mongoose' module
 const mongoose = require('mongoose')
 
-// const bcrypt = require('bcrypt');
-
-
-// Importing the 'express-session' module
-const session = require('express-session')
-
-// Importing the 'passport' module in the place where we config in
-const passport = require('./lib/passportConfig')
+// most important thing     
+require('dotenv').config();
 
 // Setting the port number for our server
 const PORT = 4000
@@ -18,7 +12,8 @@ const PORT = 4000
 // Initializing our application by creating an instance of the Express module
 const app = express()
 
-app.use(express.static(__dirname + '/public'));
+// Look for all the static files in public folder (css, JS, Images, Audio, Videos).
+app.use(express.static("public"));
 
 //initilize express layout
 const expressLayouts = require('express-ejs-layouts')
@@ -26,16 +21,16 @@ const expressLayouts = require('express-ejs-layouts')
 // look into views folder with a file name called layout.ejs
 app.use(expressLayouts)
 
-// most important thing     
-require('dotenv').config();
+// const bcrypt = require('bcrypt');
 
-//import routes
-const indexRoute = require('./routes/index');
-const userRouter = require('./routes/users')
-const authRouter = require('./routes/auth')
+// Importing the 'express-session' module
+const session = require('express-session')
+// Importing the 'passport' module in the place where we config in
+const passport = require('./helper/ppConfig')
 
+app.use(express.static(__dirname + '/public'));
 
-//uses the session library and sort our session
+// uses the session library and sort our session
 app.use(session({
      secret: 'supersecuresecret!',
      saveUninitialized: true,
@@ -51,30 +46,25 @@ app.use(session({
     next();
  })
 
+ //import routes
+const indexRoute = require('./routes/index');
+const authRoute = require('./routes/auth');
 
 //mount route
 app.use('/', indexRoute);
-app.use('/' , userRouter)
-app.use('/', authRouter)
+app.use('/', authRoute);
 
-
-// Starting the server and listening for incoming requests on the specified ports
-app.listen(PORT, ()=>{
-    console.log(`WeddingPlanning is running on ${PORT}`)
-})
+// Node.js to look in a folder views for all the ejs files.
+app.set("view engine", "ejs");
 
 //Ignore warnings
 mongoose.set('strictQuery', false)
 
-//set engine - look into the views folder to ejs files
-app.set('view engine' , 'ejs')
+
 
 
 //database connection
-const dbURI = process.env.DATABASE_URI //we put this instead of putting the db because we want to ignore it so we take it from .env 
-// console.log(process.env.DATABASE_URI)
-
-mongoose.connect(dbURI , {
+mongoose.connect(process.env.DATABASE_URI  , {
     useNewUrlParser: true,
     useUnifiedTopology: true
 
@@ -86,3 +76,16 @@ mongoose.connect(dbURI , {
     console.log(error);
   });
 
+
+// Starting the server and listening for incoming requests on the specified ports
+app.listen(PORT, ()=>{
+  console.log(`WeddingPlanning is running on ${PORT}`)
+})
+
+// const bodyParser = require('body-parser');
+
+// // parse application/x-www-form-urlencoded
+// app.use(bodyParser.urlencoded({ extended: false }));
+
+// parse application/json
+// app.use(bodyParser.json());
