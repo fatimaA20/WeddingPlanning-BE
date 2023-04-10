@@ -3,6 +3,11 @@ const express = require('express')
 // Importing the 'mongoose' module
 const mongoose = require('mongoose')
 
+const cors = require('cors');
+const cloudinary = require('cloudinary').v2;
+const multer = require('multer');
+
+
 // most important thing     
 require('dotenv').config();
 
@@ -46,15 +51,26 @@ app.use(session({
     next();
  })
 
+//  these are middleware to upload images
+ app.use(cors());
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
  //import routes
 const indexRoute = require('./routes/index');
 const authRoute = require('./routes/auth');
 const DJRoute =require('./routes/DJs')
+const imageRoute = require('./routes/image');
+
 
 //mount route
 app.use('/', indexRoute);
 app.use('/', authRoute);
 app.use('/',DJRoute);
+app.use('/', imageRoute);
 
 
 // Node.js to look in a folder views for all the ejs files.
