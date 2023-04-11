@@ -15,13 +15,15 @@ const app = express();
 // Setting the port number for the server
 const PORT = 4000;
 
-// Importing routes
-const indexRoute = require('./routes/index');
-const authRoute = require('./routes/auth');
-const DJRoute =require('./routes/DJs');
-const hallRoute = require('./routes/Halls');
-const BuffetRoute=require('./routes/Buffets');
-const HospitalityRoute = require('./routes/Hospitality');
+ //import routes
+ const indexRoute = require('./routes/index');
+ const authRoute = require('./routes/auth');
+ const DJRoute =require('./routes/DJs')
+ const securityController= require('./routes/securities')
+ const BouquetCntrl=require('./routes/bouquets')
+ const StudioController = require('./routes/studios');
+ const ArrangementCntrl = require('./routes/Arrangements')
+ 
 
 // Using middleware
 dotenv.config();
@@ -40,15 +42,6 @@ app.use(function(req, res, next){
     next();
 
  })
-
- //import routes
-const indexRoute = require('./routes/index');
-const authRoute = require('./routes/auth');
-const DJRoute =require('./routes/DJs')
-const securityController= require('./routes/securities')
-const BouquetCntrl=require('./routes/bouquets')
-const StudioController = require('./routes/studios');
-const ArrangementCntrl = require('./routes/Arrangements')
 
 
 //mount route
