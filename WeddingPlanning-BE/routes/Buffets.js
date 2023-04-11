@@ -1,6 +1,5 @@
 const express = require('express')
 const router = express.Router()
-
 // Json Parser
 router.use(express.json())
 
@@ -12,7 +11,8 @@ const isLoggedIn = require("../helper/isLoggedIn");
 
 // Routes
 router.get("/buffet/add", BuffetCntrl.buffet_create_get);
-router.post("/buffet/add", BuffetCntrl.buffet_create_post);
+// router.post("/buffet/add",upload,BuffetCntrl.buffet_create_post);
+router.post("/buffet/add",BuffetCntrl.buffet_create_post);
 
 router.get("/buffet/index", BuffetCntrl.buffet_index_get);
 router.get("/buffet/detail", BuffetCntrl.buffet_show_get);

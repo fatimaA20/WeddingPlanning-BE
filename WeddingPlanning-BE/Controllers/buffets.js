@@ -4,30 +4,48 @@ exports.buffet_create_get = (req, res) => {
   res.render("buffet/add");
 };
 
-exports.buffet_create_post = async (req, res) => {
-  try {
-    const { restaurantName, type, description, noOfGuests, price } = req.body;
-    const { path } = req.file;
-
-    const result = await cloudinary.uploader.upload(path);
-
-    const buffet = new Buffet({
-      restaurantName,
-      type,
-      description,
-      noOfGuests,
-      price,
-      image: result.secure_url,
+// / POST request to create a new Buffet record
+exports.buffet_create_post = (req, res) => {
+  const { restaurantName, type, description, noOfGuests, price, image } = req.body;
+  const buffet = new Buffet({ restaurantName, type, description, noOfGuests, price, image });
+  buffet
+    .save()
+    .then((result) => {
+      res.status(201).json({ message: 'Buffet created successfully', buffet: result });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ error: err });
     });
-
-    await buffet.save();
-
-    res.status(201).json({ buffet });
-
-  } catch (error) {
-    res.status(400).send(error);
-  }
 };
+
+
+// exports.buffet_create_post = async (req, res, next) => {
+//   try {
+//     // create a new Buffet object with the data from the request body
+//     const newBuffet = new Buffet({
+//       restaurantName: req.body.restaurantName,
+//       type: req.body.type,
+//       description: req.body.description,
+//       noOfGuests: req.body.noOfGuests,
+//       price: req.body.price
+//     });
+
+//     // if an image is included in the request, upload it to Cloudinary and add the URL to the new Buffet object
+//     if (req.file) {
+//       const result = await cloudinary.uploader.upload(req.file.path);
+//       newBuffet.image = result.secure_url;
+//     }
+
+//     // save the new Buffet object to the database
+//     const savedBuffet = await newBuffet.save();
+
+//     // send a success response with the new Buffet object
+//     res.status(201).json(savedBuffet);
+//   } catch (err) {
+//     next(err);
+//   }
+// };
 
 // HTTP GET - Buffet Index
 exports.buffet_index_get = (req, res) => {
