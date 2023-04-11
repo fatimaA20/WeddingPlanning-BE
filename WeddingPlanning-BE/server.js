@@ -50,11 +50,21 @@ app.use(session({
 const indexRoute = require('./routes/index');
 const authRoute = require('./routes/auth');
 const DJRoute =require('./routes/DJs')
+const securityController= require('./routes/securities')
+const BouquetCntrl=require('./routes/bouquets')
+const StudioController = require('./routes/studios');
+const ArrangementCntrl = require('./routes/Arrangements')
+
 
 //mount route
 app.use('/', indexRoute);
 app.use('/', authRoute);
 app.use('/',DJRoute);
+app.use('/',securityController)
+app.use('/',BouquetCntrl)
+app.use('/',StudioController)
+app.use('/',ArrangementCntrl)
+
 
 
 // Node.js to look in a folder views for all the ejs files.

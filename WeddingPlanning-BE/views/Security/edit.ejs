@@ -1,0 +1,26 @@
+<h1> Edit Security</h1>
+
+
+
+<form method ="post" action="/Security/update?_method=PUT">
+
+    <label>Name</label>
+    <input type="text" name="name" value = <%= security.name%> class="" >
+
+    <label>Description</label>
+    <input type="text" name="description" value = <%= security.description%> class="" >
+
+    <label>No Of Security</label>
+    <input type="number" name="noOfHours" value = <%= security.noOfHours %> class="" >
+
+    <label>Price</label>
+    <input type="number" name="price" value = <%= security.price %> class="" >
+
+    <label>Image</label>
+    <input type="file" name="image"  value = <%= security.image %> class="" >
+
+
+    <input type="hidden" name="id" value="<%= security._id %>"  class="form-control">
+    <br>
+    <button type="submit" class="">Save</button>
+</form>

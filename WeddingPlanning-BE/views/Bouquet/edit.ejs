@@ -1,0 +1,26 @@
+<h1> Edit Bouquet</h1>
+
+
+
+<form method ="post" action="/Bouquet/update?_method=PUT">
+
+    <label>Name</label>
+    <input type="text" name="name" value = <%= Bouquet.name %> class="" >
+
+    <label>Color</label>
+    <input type="number" name="color" value = <%= Bouquet.color %> class="" >
+
+    <label>Description</label>
+    <input type="number" name="description" value = <%= Bouquet.description %> class="" >
+
+    <label>Price</label>
+    <input type="number" name="price" value = <%= Bouquet.price %> class="" >
+
+    <label>Image</label>
+    <input type="file" name="image"  value = <%= Bouquet.image %> class="" >
+
+
+    <input type="hidden" name="id" value="<%= Bouquet._id %>"  class="form-control">
+    <br>
+    <button type="submit" class="">Save</button>
+</form>
