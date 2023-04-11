@@ -1,13 +1,11 @@
 const express = require('express')
 const router = express.Router()
 
-// Body Parser
-router.use(express.urlencoded({ extended: true }))
+// Json Parser
+router.use(express.json())
 
 // Controllers
 const BuffetCntrl = require('../controllers/buffets')
-
-router.use(express.json())
 
 // Require isLoggedIn
 const isLoggedIn = require("../helper/isLoggedIn");

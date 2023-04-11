@@ -4,21 +4,29 @@ exports.buffet_create_get = (req, res) => {
   res.render("buffet/add");
 };
 
-exports.buffet_create_post = (req, res) => {
-  console.log(req.body);
-  let buffet = new Buffet(req.body);
+exports.buffet_create_post = async (req, res) => {
+  try {
+    const { restaurantName, type, description, noOfGuests, price } = req.body;
+    const { path } = req.file;
 
-  // Save Buffet
-  buffet
-    .save()
-    .then((buffet) => {
-      // res.redirect("/buffet/index");
-      res.json({ buffet });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.send("Please try again later");
+    const result = await cloudinary.uploader.upload(path);
+
+    const buffet = new Buffet({
+      restaurantName,
+      type,
+      description,
+      noOfGuests,
+      price,
+      image: result.secure_url,
     });
+
+    await buffet.save();
+
+    res.status(201).json({ buffet });
+
+  } catch (error) {
+    res.status(400).send(error);
+  }
 };
 
 // HTTP GET - Buffet Index
