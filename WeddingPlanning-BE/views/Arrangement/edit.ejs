@@ -1,0 +1,24 @@
+<h1> Edit Arrangement</h1>
+
+
+
+<form method ="post" action="/Arrangement/update?_method=PUT">
+
+    <label>Type</label>
+    <input type="text" name="name" value = <%= Arrangement.type %> class="" >
+
+
+    <label>description</label>
+    <input type="number" name="price" value = <%= Arrangement.description %> class="" >
+    
+    <label>Price</label>
+    <input type="number" name="price" value = <%= Arrangement.price %> class="" >
+
+    <label>Image</label>
+    <input type="file" name="image"  value = <%= Arrangement.image %> class="" >
+
+
+    <input type="hidden" name="id" value="<%= Arrangement._id %>"  class="form-control">
+    <br>
+    <button type="submit" class="">Save</button>
+</form>

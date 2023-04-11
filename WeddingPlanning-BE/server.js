@@ -38,7 +38,28 @@ app.use(passport.session());
 app.use(function(req, res, next){
     res.locals.currentUser = req.user;
     next();
- });
+
+ })
+
+ //import routes
+const indexRoute = require('./routes/index');
+const authRoute = require('./routes/auth');
+const DJRoute =require('./routes/DJs')
+const securityController= require('./routes/securities')
+const BouquetCntrl=require('./routes/bouquets')
+const StudioController = require('./routes/studios');
+const ArrangementCntrl = require('./routes/Arrangements')
+
+
+//mount route
+app.use('/', indexRoute);
+app.use('/', authRoute);
+app.use('/',DJRoute);
+app.use('/',securityController)
+app.use('/',BouquetCntrl)
+app.use('/',StudioController)
+app.use('/',ArrangementCntrl)
+
 app.use(cors());
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -46,12 +67,7 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 app.use(express.static(__dirname + '/public'));
-app.use('/', indexRoute);
-app.use('/', authRoute);
-app.use('/',DJRoute);
-app.use('/',hallRoute);
-app.use('/',BuffetRoute);
-app.use('/',HospitalityRoute);
+
 
 // Setting up the view engine
 app.set("view engine", "ejs");
