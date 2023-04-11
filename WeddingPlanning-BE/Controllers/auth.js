@@ -57,8 +57,8 @@ exports.auth_signin_get = (req, res) => {
 
 // JWT Authentication
 exports.auth_signin_post = async (req, res) => {
-  console.log("req :" , req.body)
   let { emailAddress, password } = req.body;
+
   console.log(emailAddress);
 
   try {
