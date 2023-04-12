@@ -28,9 +28,12 @@ exports.hall_show_get = (req, res) => {
 
 // HTTP GET - Load Hall Edit Form
 exports.hall_edit_get = (req, res) => {
+  console.log("hereeeee")
+  console.log(req.query.id)
   Hall.findById(req.query.id)
     .then((hall) => {
-      res.json({ hall });
+      console.log(hall)
+      res.json( hall );
     })
     .catch((err) => {
       console.log(err);
