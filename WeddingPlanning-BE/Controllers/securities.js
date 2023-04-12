@@ -38,7 +38,7 @@ exports.security_show_get = (req, res) => {
   console.log(req.query.id);
   Security.findById(req.query.id)
     .then((security) => {
-      res.render("security/detail", { security ,moment});
+      res.json( security );
     })
     .catch((err) => {
       console.log(err);

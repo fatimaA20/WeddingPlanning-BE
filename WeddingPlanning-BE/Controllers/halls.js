@@ -18,7 +18,7 @@ exports.hall_show_get = (req, res) => {
   console.log(req.query.id);
   Hall.findById(req.query.id)
     .then((hall) => {
-      res.json({hall})
+      res.json(hall)
     })
     .catch((err) => {
       console.log(err);
@@ -30,7 +30,7 @@ exports.hall_show_get = (req, res) => {
 exports.hall_edit_get = (req, res) => {
   Hall.findById(req.query.id)
     .then((hall) => {
-      res.json({ hall });
+      res.json( hall );
     })
     .catch((err) => {
       console.log(err);

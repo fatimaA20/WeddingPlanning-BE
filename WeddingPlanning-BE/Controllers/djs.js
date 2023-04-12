@@ -38,7 +38,7 @@ exports.DJ_show_get = (req, res) => {
   console.log(req.query.id);
   DJ.findById(req.query.id)
     .then((dj) => {
-      res.json({dj})
+      res.json(dj)
     })
     .catch((err) => {
       console.log(err);
