@@ -38,8 +38,10 @@ exports.Arrangement_show_get = (req, res) => {
   console.log(req.query.id);
   Arrangement.findById(req.query.id)
     .then((Arrangement) => {
-      res.render("Arrangement/detail", { Arrangement ,moment});
+      res.json(Arrangement);
     })
+
+
     .catch((err) => {
       console.log(err);
     });

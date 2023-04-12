@@ -38,7 +38,7 @@ exports.hospitality_show_get = (req, res) => {
   const { id } = req.query;
   Hospitality.findById(id)
     .then((result) => {
-      res.status(200).json({ hospitality: result });
+      res.status(200).json( result );
     })
     .catch((err) => {
       console.log(err);

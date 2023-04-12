@@ -38,7 +38,7 @@ exports.Bouquet_show_get = (req, res) => {
   console.log(req.query.id);
   Bouquet.findById(req.query.id)
     .then((Bouquet) => {
-      res.render("Bouquet/detail", { Bouquet ,moment});
+      res.json( Bouquet );
     })
     .catch((err) => {
       console.log(err);

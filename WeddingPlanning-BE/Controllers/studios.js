@@ -38,7 +38,7 @@ exports.Studio_show_get = (req, res) => {
   console.log(req.query.id);
   Studio.findById(req.query.id)
     .then((Studio) => {
-      res.render("Studio/detail", { Studio ,moment});
+      res.json(Studio );
     })
     .catch((err) => {
       console.log(err);
